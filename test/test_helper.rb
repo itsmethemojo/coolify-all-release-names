@@ -7,4 +7,13 @@ class ActiveSupport::TestCase
   fixtures :all
 
   # Add more helper methods to be used by all tests here...
+
+  def writeFile(folderPath, filename, content)
+    if !File.directory?(folderPath)
+      Dir.mkdir(folderPath)
+    end
+    file = File.new(folderPath + '/' + filename,'w')
+    file.write(content)
+    file.close
+  end
 end

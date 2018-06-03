@@ -3,12 +3,18 @@ require 'json'
 class NameListsModel
   include ActiveModel::Model
 
+  @filesRoot
+
+  def initialize(filesRoot = 'storage')
+    @filesRoot = filesRoot
+  end
+
   def index
-    JSON.parse(File.read Rails.root.join('storage', 'namelists.json'))
+    JSON.parse(File.read Rails.root.join(@filesRoot, 'namelists.json'))
   end
 
   def item(id)
-    filename = Rails.root.join('storage', 'namelists', id + '.json')
+    filename = Rails.root.join(@filesRoot, 'namelists', id + '.json')
     if !File.exist?(filename)
       raise NoSuchEntityException
     end
