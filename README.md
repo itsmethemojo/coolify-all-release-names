@@ -1,5 +1,7 @@
 # Name my Release
 
+[![Build Status](https://travis-ci.org/itsmethemojo/name-my-release.svg?branch=master)](https://travis-ci.org/itsmethemojo/name-my-release)
+
 ## what is this
 
 An api to retreive unique names for the releases of your application.
