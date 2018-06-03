@@ -1,0 +1,3 @@
+class NoReleaseNamesLeftException < StandardError
+
+end

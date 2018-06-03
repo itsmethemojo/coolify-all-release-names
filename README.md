@@ -1,22 +1,30 @@
-## run the application
+# Name my Release
 
-### 1. git clone
+## what is this
 
-```
-git clone TODO
-```
+An api to retreive unique names for the releases of your application.
 
-### 2. build container
-```
-docker build -t release-namer .
-```
+## but why
 
-### 3. start local server
-```
-docker stop release-namer; \
-docker rm release-namer; \
-docker run -it -v$(pwd):/app --name release-namer -p3000:3000 release-namer bash -c 'cd /app; bundle install --path vendor/cache; bin/rails server -P /tmp/rails-pid'
-```
+When you work with continuous delivery you may release your software in smaller packages more often.
+Semantic versioning is key for modern applications. When i was working with sentry (a frontend
+logging tool which is able to map the errors it catches to the software version of your application) me
+and my colleges hardly found out that version numbers aren't really catchy to remember which feature or
+bugfix was shipped with it. So give every release additionally a name. You know like android does. But this
+should be no manual task. There should be an api for that, so that i can easily integrate that in to my
+build chain. And it should be reproduceable. If i run a build twice, i should get the same name. Oh and
+there should be cool names in it.
 
-### 4. open application
-[link](http://localhost:3000)  
+And there it is. A reason to write an api.
+
+## software prerequisites
+
+* [docker](https://docs.docker.com/install/#supported-platforms)
+* [make](https://formulae.brew.sh/formula/make)
+
+## howto get it running locally
+After cloning the repository all you need is **only one command**.
+```
+make run
+```
+When the server is running you can [open the application in the browser](http://localhost:3000)
