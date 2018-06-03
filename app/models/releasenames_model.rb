@@ -5,9 +5,10 @@ class ReleasenamesModel
 
   def index(namelist_id, project_name)
     filename = getFilename(namelist_id, project_name)
-    if File.exist?(filename)
-      JSON.parse(File.read filename)
+    if !File.exist?(filename)
+      raise NoSuchEntityException
     end
+    JSON.parse(File.read filename)
   end
 
   def create(namelist_id, project_name, release_name)

@@ -9,8 +9,9 @@ class NamelistsModel
 
   def item(id)
     filename = Rails.root.join('storage', 'namelists', id + '.json')
-    if File.exist?(filename)
-      JSON.parse(File.read filename)
+    if !File.exist?(filename)
+      raise NoSuchEntityException
     end
+    JSON.parse(File.read filename)
   end
 end

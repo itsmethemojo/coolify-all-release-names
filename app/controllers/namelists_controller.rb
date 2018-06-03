@@ -5,10 +5,8 @@ class NamelistsController < ApplicationController
 
   def item
     item = NamelistsModel.new.item(params[:namelist_id])
-    if item.nil?
-      renderErrorResponse(404)
-      return
-    end
     render json: item
+  rescue NoSuchEntityException
+    renderErrorResponse(404)
   end
 end

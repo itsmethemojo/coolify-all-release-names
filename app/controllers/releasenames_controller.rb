@@ -1,11 +1,9 @@
 class ReleasenamesController < ApplicationController
   def index
     index = ReleasenamesModel.new.index(params[:namelist_id], params[:project_name])
-    if index.nil?
-      renderErrorResponse(404)
-      return
-    end
     render json: index
+  rescue NoSuchEntityException
+    renderErrorResponse(404)
   end
 
   def create
