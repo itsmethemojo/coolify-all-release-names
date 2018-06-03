@@ -1,7 +1,16 @@
 require 'json'
+require 'fileutils'
 
 class ReleaseNamesModel
   include ActiveModel::Model
+
+  @filesRoot
+  @nameLists
+
+  def initialize(filesRoot = 'tmp', nameLists = NameListsModel.new)
+    @filesRoot = filesRoot
+    @nameLists = nameLists
+  end
 
   def index(name_list_id, project_name)
     filename = getFilename(name_list_id, project_name)
@@ -14,7 +23,7 @@ class ReleaseNamesModel
   def create(name_list_id, project_name, release_name)
     filename = getFilename(name_list_id, project_name)
     if !File.exist?(filename)
-      Dir.mkdir(getFoldername(name_list_id))
+      FileUtils.mkdir_p(getFoldername(name_list_id))
       writeFile(filename,'{}')
     end
     releases = JSON.parse(File.read filename)
@@ -28,11 +37,11 @@ class ReleaseNamesModel
   private
 
   def getFilename(name_list_id, project_name)
-    Rails.root.join('tmp', name_list_id, project_name + '.json')
+    Rails.root.join(@filesRoot, name_list_id, project_name + '.json')
   end
 
   def getFoldername(name_list_id)
-    Rails.root.join('tmp', name_list_id)
+    Rails.root.join(@filesRoot, name_list_id)
   end
 
   def writeFile(filename, content)
@@ -42,7 +51,7 @@ class ReleaseNamesModel
   end
 
   def generateReleaseAlias(name_list_id, already_used_aliases)
-    left_names = NameListsModel.new.item(name_list_id) - already_used_aliases
+    left_names = @nameLists.item(name_list_id) - already_used_aliases
     if left_names.empty?
       raise NoReleaseNamesLeftException.new
     end
