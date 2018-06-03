@@ -1,5 +1,8 @@
 language: ruby,
 os: linux,
+install: [
+  "bundle install"
+],
 script: [
   "rails test test/unit"
 ]
