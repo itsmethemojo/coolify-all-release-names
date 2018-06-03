@@ -9,21 +9,17 @@ clean:
 	docker stop $(CONTAINER_NAME) || true; \
 	docker rm $(CONTAINER_NAME) || true
 
-.PHONY: version
-version: docker-build
-version:
-	docker run -it --name $(CONTAINER_NAME) $(IMAGE_NAME) bash -c 'rails --api --help'
-
-
 .PHONY: run
 run: docker-build
 run:
-	docker run -it -v$$(pwd):/app --name $(CONTAINER_NAME) -p3000:3000 $(IMAGE_NAME) bash -c 'cd /app; bundle install --path vendor/cache; bin/rails server -P /tmp/rails-pid'
+	docker run -it -v$$(pwd):/app --name $(CONTAINER_NAME) -p3000:3000 $(IMAGE_NAME) bash -c 'bin/rails server -P /tmp/rails-pid'
 
-.PHONY: build
-build: docker-build
-build:
-	docker run -it -v$$(pwd):/app --name $(CONTAINER_NAME) -p3000:3000 $(IMAGE_NAME) bash -c 'cd /app; bundle install --path vendor/cache'
+
+.PHONY: unit-test
+unit-test: docker-build
+unit-test:
+	docker run -it -v$$(pwd):/app --name $(CONTAINER_NAME) $(IMAGE_NAME) bash -c 'bin/rails test test/unit'
+
 
 .PHONY: docker-build
 docker-build: clean

@@ -2,6 +2,11 @@ FROM ruby:2.5
 
 RUN apt-get update && apt-get install -y nodejs
 
-RUN gem install rails
+COPY Gemfile* /tmp/
 
-RUN ruby --version && rails --version
+RUN cd /tmp/ && \
+    ls Gemfile* && \
+    bundle install --system && \
+    gem list
+
+WORKDIR /app
