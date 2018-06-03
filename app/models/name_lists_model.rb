@@ -1,6 +1,6 @@
 require 'json'
 
-class NamelistsModel
+class NameListsModel
   include ActiveModel::Model
 
   def index
