@@ -29,4 +29,12 @@ After cloning the repository all you need is **only one command**.
 ```
 make run
 ```
-When the server is running you can [open the application in the browser](http://localhost:3000)
+When the server is running you can [open the application in the browser](http://localhost:3000/api/namepools)
+
+## howto contribute
+fork the master and create an pull request
+
+you can run the tests locally with
+```
+make test
+```
