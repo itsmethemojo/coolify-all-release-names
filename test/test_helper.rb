@@ -31,8 +31,8 @@ module ActiveSupport
       file.close
     end
 
-    def remove_dir(folderpath)
-      FileUtils.remove_dir(folderpath)
+    def remove_dir(path)
+      FileUtils.rm_rf(path)
     end
 
     def static_root
@@ -41,6 +41,15 @@ module ActiveSupport
 
     def dynamic_root
       DYNAMIC_ROOT
+    end
+
+    def setup
+      prepare_static_test_files
+    end
+
+    def teardown
+      remove_dir(static_root)
+      remove_dir(dynamic_root)
     end
   end
 end

@@ -3,36 +3,26 @@
 require 'test_helper'
 
 class NamePoolsModelTest < ActiveSupport::TestCase
-  def test_name_lists_index
-    prepare_static_test_files
+  def test_name_pools_index
     item_list = NamePoolsModel.new(static_root).index
-    assert(
-      item_list.is_a?(Array),
-      'NamePoolsModel index returns array'
-    )
-    assert(
-      item_list.sample.key?('id'),
-      'random NamePoolsModel item has id key'
-    )
-    assert(
-      item_list.sample.key?('name'),
-      'random NamePoolsModel item has name key'
-    )
-    remove_dir(static_root)
+    assert(item_list.is_a?(Array), 'index returns list')
+    assert(item_list.sample.key?('id'), 'item from list has key "id"')
+    assert(item_list.sample.key?('name'), 'item from list has key "name"')
   end
 
-  def test_name_lists_item
-    prepare_static_test_files
+  def test_name_pools_1
     item1 = NamePoolsModel.new(static_root).item('1')
     assert(
       item1 == %w[one two three],
       'NamePoolsModel item "1" returns array'
     )
+  end
+
+  def test_name_pools_2
     item2 = NamePoolsModel.new(static_root).item('2')
     assert(
       item2 == %w[four five six],
       'NamePoolsModel item "2" returns array'
     )
-    remove_dir(static_root)
   end
 end
