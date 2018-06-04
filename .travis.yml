@@ -5,3 +5,4 @@ install:
   - "bundle install --jobs=3 --retry=3"
 script:
   - "rails test test/unit"
+  - "rubocop app test"
