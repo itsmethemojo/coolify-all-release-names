@@ -1,52 +1,87 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
-class ReleaseNamesModelTest < ActiveSupport::TestCase
-
-  def test_release_names_index_create
-    prepareStaticTestFiles(@@staticFilesRoot)
-    nameList = NameListsModel.new(@@staticFilesRoot)
+class ReleaseAliasesModelTest < ActiveSupport::TestCase
+  def test_release_aliases_empty
+    release_aliases = init_release_aliases
     assert_raise(
       NoSuchEntityException,
-      'ReleaseNameModel index throws exception if no release name for that project was ever created'
-    ) {
-      ReleaseNamesModel.new(@@dynamicFilesRoot,nameList).index('1', 'unit-tests')
-    }
-
-    keyValueReturn1 = ReleaseNamesModel.new(@@dynamicFilesRoot,nameList).create('1', 'unit-tests', '1.0.0')
-    assert(keyValueReturn1.key?('1.0.0'),'ReleaseNameModel return key value if item is created')
-
-    keyValueReturn2 = ReleaseNamesModel.new(@@dynamicFilesRoot,nameList).create('1', 'unit-tests', '2.0.0')
-    assert(keyValueReturn2.key?('2.0.0'),'ReleaseNameModel return key value if item is created')
-
-    keyValueReturn3 = ReleaseNamesModel.new(@@dynamicFilesRoot,nameList).create('1', 'unit-tests', '3.0.0')
-    assert(keyValueReturn3.key?('3.0.0'),'ReleaseNameModel return key value if item is created')
-
-    keyValueReturn4 = ReleaseNamesModel.new(@@dynamicFilesRoot,nameList).create('1', 'unit-tests', '3.0.0')
-    assert(keyValueReturn4.key?('3.0.0'),'ReleaseNameModel return same key if release was already named')
-
-
-    releaseNames = ReleaseNamesModel.new(@@dynamicFilesRoot,nameList).index('1', 'unit-tests')
-
-    assert(releaseNames.keys.length == 3,'ReleaseNameModel has key 1.0.0')
-    assert(releaseNames.key?('1.0.0'),'ReleaseNameModel has key 1.0.0')
-    assert(releaseNames.key?('2.0.0'),'ReleaseNameModel has key 2.0.0')
-    assert(releaseNames.key?('3.0.0'),'ReleaseNameModel has key 3.0.0')
-
-    assert(releaseNames.invert.key?('one'),'ReleaseNameModel has used the names one, two and three from the namelist 1')
-    assert(releaseNames.invert.key?('two'),'ReleaseNameModel has used the names one, two and three from the namelist 1')
-    assert(releaseNames.invert.key?('three'),'ReleaseNameModel has used the names one, two and three from the namelist 1')
-
-
-
-    assert_raise(
-      NoReleaseNamesLeftException,
-      'ReleaseNameModel create throws exception if no release name left in the source list to take'
-    ) {
-      ReleaseNamesModel.new(@@dynamicFilesRoot,nameList).create('1', 'unit-tests', '4.0.0')
-    }
-
-    remove_dir(@@dynamicFilesRoot)
-    remove_dir(@@staticFilesRoot)
+      'ReleaseNameModel index throws exception if no release alias '\
+      'for that project was ever created'
+    ) do
+      puts release_aliases.index('1', 'unit-tests')
+      release_aliases.index('1', 'unit-tests')
+    end
   end
 
+  def test_release_aliases_create_item_twice
+    release_aliases = init_release_aliases
+    t1 = release_aliases.create('1', 'unit-tests', '1.0.0')
+    assert(t1.key?('1.0.0'), 'return key value if item is created')
+    t2 = release_aliases.create('1', 'unit-tests', '1.0.0')
+    assert(t2.key?('1.0.0'), 'return key value if item is created')
+    assert(
+      t1 == t2,
+      'the release alias created on the second call is identic'
+    )
+  end
+
+  def test_release_aliases_create_multiple_items
+    release_aliases = init_release_aliases
+    t1 = release_aliases.create('1', 'unit-tests', '1.0.0')
+    assert(t1.key?('1.0.0'), 'return key value if item is created')
+    t2 = release_aliases.create('1', 'unit-tests', '2.0.0')
+    assert(t2.key?('2.0.0'), 'return key value if item is created')
+    t3 = release_aliases.create('1', 'unit-tests', '3.0.0')
+    assert(t3.key?('3.0.0'), 'return key value if item is created')
+  end
+
+  def test_release_aliases_length_after_multiple_creates
+    release_aliases = init_release_aliases_with_three_items
+    t1 = release_aliases.index('1', 'unit-tests')
+    assert(t1.keys.length == 3, '3 items in index list')
+  end
+
+  def test_release_aliases_index_keys_after_multiple_creates
+    release_aliases = init_release_aliases_with_three_items
+    t1 = release_aliases.index('1', 'unit-tests')
+    assert(t1.key?('1.0.0'), '1.0.0 in keys')
+    assert(t1.key?('2.0.0'), '2.0.0 in keys')
+    assert(t1.key?('3.0.0'), '3.0.0 in keys')
+  end
+
+  def test_release_aliases_index_values_after_multiple_creates
+    release_aliases = init_release_aliases_with_three_items
+    t1 = release_aliases.index('1', 'unit-tests')
+    assert(t1.invert.key?('one'), 'one in values')
+    assert(t1.invert.key?('two'), 'two in values')
+    assert(t1.invert.key?('three'), 'three in values')
+  end
+
+  def test_release_aliases_full
+    release_aliases = init_release_aliases_with_three_items
+    assert_raise(
+      NoReleaseNamesLeftException,
+      'ReleaseNameModel create throws exception if no release name left '\
+      'in the source list to take'
+    ) do
+      release_aliases.create('1', 'unit-tests', '4.0.0')
+    end
+  end
+
+  private
+
+  def init_release_aliases
+    name_lists = NamePoolsModel.new(static_root)
+    ReleaseAliasesModel.new(dynamic_root, name_lists)
+  end
+
+  def init_release_aliases_with_three_items
+    release_aliases = init_release_aliases
+    release_aliases.create('1', 'unit-tests', '1.0.0')
+    release_aliases.create('1', 'unit-tests', '2.0.0')
+    release_aliases.create('1', 'unit-tests', '3.0.0')
+    release_aliases
+  end
 end
