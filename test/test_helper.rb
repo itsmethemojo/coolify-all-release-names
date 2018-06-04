@@ -16,7 +16,7 @@ class ActiveSupport::TestCase
 
   private
 
-  def prepareStaticTestFiles(filesRoot)
+  def prepare_static_test_files(filesRoot)
     writeFile(filesRoot, 'namelists.json', '[{"id":"1","name":"one"},{"id":"2","name":"two"}]')
     writeFile(filesRoot + '/namelists', '1.json', '["one","two","three"]')
     writeFile(filesRoot + '/namelists', '2.json', '["four","five","six"]')
