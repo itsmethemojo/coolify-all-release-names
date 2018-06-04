@@ -7,8 +7,6 @@ require 'fileutils'
 
 module ActiveSupport
   class TestCase
-    fixtures :all
-
     STATIC_ROOT = '/tmp/tests/static'
     DYNAMIC_ROOT = '/tmp/tests/dynamic'
 
