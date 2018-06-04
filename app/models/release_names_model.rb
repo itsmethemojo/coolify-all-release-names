@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'json'
 require 'fileutils'
 
@@ -14,24 +16,22 @@ class ReleaseNamesModel
 
   def index(name_list_id, project_name)
     filename = getFilename(name_list_id, project_name)
-    if !File.exist?(filename)
-      raise NoSuchEntityException
-    end
-    JSON.parse(File.read filename)
+    raise NoSuchEntityException unless File.exist?(filename)
+    JSON.parse(File.read(filename))
   end
 
   def create(name_list_id, project_name, release_name)
     filename = getFilename(name_list_id, project_name)
-    if !File.exist?(filename)
+    unless File.exist?(filename)
       FileUtils.mkdir_p(getFoldername(name_list_id))
-      writeFile(filename,'{}')
+      writeFile(filename, '{}')
     end
-    releases = JSON.parse(File.read filename)
+    releases = JSON.parse(File.read(filename))
     if releases[release_name].nil?
-      releases[release_name] = generateReleaseAlias(name_list_id,releases.values)
-      writeFile(filename,JSON.generate(releases))
+      releases[release_name] = generateReleaseAlias(name_list_id, releases.values)
+      writeFile(filename, JSON.generate(releases))
     end
-    {release_name => releases[release_name]}
+    { release_name => releases[release_name] }
   end
 
   private
@@ -45,16 +45,14 @@ class ReleaseNamesModel
   end
 
   def writeFile(filename, content)
-    file = File.new(filename,'w')
+    file = File.new(filename, 'w')
     file.write(content)
     file.close
   end
 
   def generateReleaseAlias(name_list_id, already_used_aliases)
     left_names = @nameLists.item(name_list_id) - already_used_aliases
-    if left_names.empty?
-      raise NoReleaseNamesLeftException.new
-    end
+    raise NoReleaseNamesLeftException if left_names.empty?
     left_names.sample
   end
 end

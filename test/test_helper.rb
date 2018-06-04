@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ENV['RAILS_ENV'] ||= 'test'
 require_relative '../config/environment'
 require 'rails/test_help'
@@ -15,16 +17,14 @@ class ActiveSupport::TestCase
   private
 
   def prepareStaticTestFiles(filesRoot)
-    writeFile(filesRoot, 'namelists.json','[{"id":"1","name":"one"},{"id":"2","name":"two"}]')
-    writeFile(filesRoot + '/namelists','1.json','["one","two","three"]')
-    writeFile(filesRoot + '/namelists','2.json','["four","five","six"]')
+    writeFile(filesRoot, 'namelists.json', '[{"id":"1","name":"one"},{"id":"2","name":"two"}]')
+    writeFile(filesRoot + '/namelists', '1.json', '["one","two","three"]')
+    writeFile(filesRoot + '/namelists', '2.json', '["four","five","six"]')
   end
 
   def writeFile(folderPath, filename, content)
-    if !File.directory?(folderPath)
-      FileUtils.mkdir_p(folderPath)
-    end
-    file = File.new(folderPath + '/' + filename,'w')
+    FileUtils.mkdir_p(folderPath) unless File.directory?(folderPath)
+    file = File.new(folderPath + '/' + filename, 'w')
     file.write(content)
     file.close
   end
@@ -32,6 +32,4 @@ class ActiveSupport::TestCase
   def remove_dir(folderPath)
     FileUtils.remove_dir(folderPath)
   end
-
-
 end

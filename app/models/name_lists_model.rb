@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'json'
 
 class NameListsModel
@@ -10,14 +12,12 @@ class NameListsModel
   end
 
   def index
-    JSON.parse(File.read Rails.root.join(@filesRoot, 'namelists.json'))
+    JSON.parse(File.read(Rails.root.join(@filesRoot, 'namelists.json')))
   end
 
   def item(id)
     filename = Rails.root.join(@filesRoot, 'namelists', id + '.json')
-    if !File.exist?(filename)
-      raise NoSuchEntityException
-    end
-    JSON.parse(File.read filename)
+    raise NoSuchEntityException unless File.exist?(filename)
+    JSON.parse(File.read(filename))
   end
 end

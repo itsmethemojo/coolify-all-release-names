@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class NamelistsController < ApplicationController
   def index
     render json: NameListsModel.new.index

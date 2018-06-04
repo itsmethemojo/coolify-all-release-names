@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ReleasenamesController < ApplicationController
   def index
     index = ReleaseNamesModel.new.index(params[:name_list_id], params[:project_name])
