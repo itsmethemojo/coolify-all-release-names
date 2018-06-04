@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
-  get 'api/namelists' => 'namelists#index'
-  get 'api/namelists/:name_list_id' => 'namelists#item'
-  get 'api/namelists/:name_list_id/project/:project_name' => 'releasenames#index'
-  post 'api/namelists/:name_list_id/project/:project_name' => 'releasenames#create'
+  get 'api/namepools' => 'namepools#index'
+  get 'api/namepools/:name_list_id' => 'namepools#item'
+  get 'api/namepools/:name_list_id/project/:project_name' => 'releasealiases#index'
+  post 'api/namepools/:name_list_id/project/:project_name' => 'releasealiases#create'
 end

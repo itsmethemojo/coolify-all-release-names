@@ -2,11 +2,11 @@
 
 require 'test_helper'
 
-class ReleaseNamesModelTest < ActiveSupport::TestCase
+class ReleaseAliasesModelTest < ActiveSupport::TestCase
   def test_release_names_index_create
-    prepare_static_test_files(@@static_files_root)
-    name_lists = NameListsModel.new(@@static_files_root)
-    release_names = ReleaseNamesModel.new(@@dynamic_files_root, name_lists)
+    prepare_static_test_files
+    name_lists = NamePoolsModel.new(static_root)
+    release_names = ReleaseAliasesModel.new(dynamic_root, name_lists)
 
     assert_raise(
       NoSuchEntityException,
@@ -80,7 +80,7 @@ class ReleaseNamesModelTest < ActiveSupport::TestCase
       release_names.create('1', 'unit-tests', '4.0.0')
     end
 
-    remove_dir(@@dynamic_files_root)
-    remove_dir(@@static_files_root)
+    remove_dir(dynamic_root)
+    remove_dir(static_root)
   end
 end
