@@ -6,30 +6,31 @@ require 'rails/test_help'
 require 'fileutils'
 
 class ActiveSupport::TestCase
-  # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
   fixtures :all
 
-  # Add more helper methods to be used by all tests here...
-
-  @@staticFilesRoot = '/tmp/tests/static'
-  @@dynamicFilesRoot = '/tmp/tests/dynamic'
+  @@static_files_root = '/tmp/tests/static'
+  @@dynamic_files_root = '/tmp/tests/dynamic'
 
   private
 
-  def prepare_static_test_files(filesRoot)
-    writeFile(filesRoot, 'namelists.json', '[{"id":"1","name":"one"},{"id":"2","name":"two"}]')
-    writeFile(filesRoot + '/namelists', '1.json', '["one","two","three"]')
-    writeFile(filesRoot + '/namelists', '2.json', '["four","five","six"]')
+  def prepare_static_test_files(files_root)
+    write_file(
+      files_root,
+      'namelists.json',
+      '[{"id":"1","name":"one"},{"id":"2","name":"two"}]'
+    )
+    write_file(files_root + '/namelists', '1.json', '["one","two","three"]')
+    write_file(files_root + '/namelists', '2.json', '["four","five","six"]')
   end
 
-  def writeFile(folderPath, filename, content)
-    FileUtils.mkdir_p(folderPath) unless File.directory?(folderPath)
-    file = File.new(folderPath + '/' + filename, 'w')
+  def write_file(folderpath, filename, content)
+    FileUtils.mkdir_p(folderpath) unless File.directory?(folderpath)
+    file = File.new(folderpath + '/' + filename, 'w')
     file.write(content)
     file.close
   end
 
-  def remove_dir(folderPath)
-    FileUtils.remove_dir(folderPath)
+  def remove_dir(folderpath)
+    FileUtils.remove_dir(folderpath)
   end
 end

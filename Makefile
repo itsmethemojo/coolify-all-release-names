@@ -17,7 +17,7 @@ run:
 .PHONY: test
 test: docker-build
 test:
-	docker run -it -v$$(pwd):/app --name $(CONTAINER_NAME) $(IMAGE_NAME) bash -c 'bin/rails test test/unit; rubocop app test'
+	docker run -it -v$$(pwd):/app --name $(CONTAINER_NAME) $(IMAGE_NAME) bash -c 'bin/rails test test/unit && rubocop app test'
 
 .PHONY: unit-test
 unit-test: docker-build

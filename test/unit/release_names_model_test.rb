@@ -4,70 +4,71 @@ require 'test_helper'
 
 class ReleaseNamesModelTest < ActiveSupport::TestCase
   def test_release_names_index_create
-    prepare_static_test_files(@@staticFilesRoot)
-    name_lists = NameListsModel.new(@@staticFilesRoot)
-    release_names = ReleaseNamesModel.new(@@dynamicFilesRoot, name_lists)
+    prepare_static_test_files(@@static_files_root)
+    name_lists = NameListsModel.new(@@static_files_root)
+    release_names = ReleaseNamesModel.new(@@dynamic_files_root, name_lists)
 
     assert_raise(
       NoSuchEntityException,
-      'ReleaseNameModel index throws exception if no release name for that project was ever created'
+      'ReleaseNameModel index throws exception if no release name '\
+      'for that project was ever created'
     ) do
       release_names.index('1', 'unit-tests')
     end
 
-    keyValueReturn1 = release_names.create('1', 'unit-tests', '1.0.0')
+    key_value_return1 = release_names.create('1', 'unit-tests', '1.0.0')
     assert(
-      keyValueReturn1.key?('1.0.0'),
+      key_value_return1.key?('1.0.0'),
       'ReleaseNameModel return key value if item is created'
     )
 
-    keyValueReturn2 = release_names.create('1', 'unit-tests', '2.0.0')
+    key_value_return2 = release_names.create('1', 'unit-tests', '2.0.0')
     assert(
-      keyValueReturn2.key?('2.0.0'),
+      key_value_return2.key?('2.0.0'),
       'ReleaseNameModel return key value if item is created'
     )
 
-    keyValueReturn3 = release_names.create('1', 'unit-tests', '3.0.0')
+    key_value_return3 = release_names.create('1', 'unit-tests', '3.0.0')
     assert(
-      keyValueReturn3.key?('3.0.0'),
+      key_value_return3.key?('3.0.0'),
       'ReleaseNameModel return key value if item is created'
     )
 
-    keyValueReturn4 = release_names.create('1', 'unit-tests', '3.0.0')
+    key_value_return4 = release_names.create('1', 'unit-tests', '3.0.0')
     assert(
-      keyValueReturn4.key?('3.0.0'),
+      key_value_return4.key?('3.0.0'),
       'ReleaseNameModel return same key if release was already named'
     )
 
-    releaseNames = release_names.index('1', 'unit-tests')
+    release_names_index = release_names.index('1', 'unit-tests')
 
     assert(
-      releaseNames.keys.length == 3,
+      release_names_index.keys.length == 3,
       'ReleaseNameModel has key 1.0.0'
     )
     assert(
-      releaseNames.key?('1.0.0'),
+      release_names_index.key?('1.0.0'),
       'ReleaseNameModel has key 1.0.0'
     )
     assert(
-      releaseNames.key?('2.0.0'),
+      release_names_index.key?('2.0.0'),
       'ReleaseNameModel has key 2.0.0'
     )
     assert(
-      releaseNames.key?('3.0.0'),
+      release_names_index.key?('3.0.0'),
       'ReleaseNameModel has key 3.0.0'
     )
 
     assert(
-      releaseNames.invert.key?('one'),
+      release_names_index.invert.key?('one'),
       'ReleaseNameModel has used the names one, two, three from the namelist 1'
     )
     assert(
-      releaseNames.invert.key?('two'),
+      release_names_index.invert.key?('two'),
       'ReleaseNameModel has used the names one, two, three from the namelist 1'
     )
     assert(
-      releaseNames.invert.key?('three'),
+      release_names_index.invert.key?('three'),
       'ReleaseNameModel has used the names one, two, three from the namelist 1'
     )
 
@@ -79,7 +80,7 @@ class ReleaseNamesModelTest < ActiveSupport::TestCase
       release_names.create('1', 'unit-tests', '4.0.0')
     end
 
-    remove_dir(@@dynamicFilesRoot)
-    remove_dir(@@staticFilesRoot)
+    remove_dir(@@dynamic_files_root)
+    remove_dir(@@static_files_root)
   end
 end
