@@ -47,3 +47,5 @@ gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 
 # static code analysis
 gem 'rubocop', '~> 0.56.0', require: false
+
+gem 'mock_redis'

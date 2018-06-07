@@ -8,7 +8,7 @@ class ApplicationController < ActionController::API
     error_code,
     error_message = Rack::Utils::HTTP_STATUS_CODES[error_code]
   )
-    json = { status => error_code.to_s, message => error_message }
+    json = { status: error_code.to_s, message: error_message }
     render json: json, status: error_code
   end
 end
