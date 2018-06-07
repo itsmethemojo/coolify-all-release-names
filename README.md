@@ -1,6 +1,7 @@
 # Name my Release
 
 [![Build Status](https://travis-ci.org/itsmethemojo/name-my-release.svg?branch=master)](https://travis-ci.org/itsmethemojo/name-my-release)
+[![Heroku](https://heroku-badge.herokuapp.com/?app=name-my-release&style=flat&root=api/namepools)](https://name-my-release.herokuapp.com/api/namepools)
 
 ## what is this
 
