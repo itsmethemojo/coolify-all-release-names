@@ -2,23 +2,26 @@
 
 require 'json'
 require 'fileutils'
+require 'redis'
 
 # model to access already created release aliases and to create new ones
 class ReleaseAliasesModel
   include ActiveModel::Model
 
-  @files_root = nil
   @name_lists = nil
+  @redis = nil
+  KEY_PREFIX = 'bla'
 
-  def initialize(files_root = 'tmp', name_lists = NamePoolsModel.new)
-    @files_root = files_root
+  def initialize(
+    name_lists = NamePoolsModel.new,
+    redis = Redis.new
+  )
     @name_lists = name_lists
+    @redis = redis
   end
 
   def index(name_list_id, project_name)
-    filename = get_filename(name_list_id, project_name)
-    raise NoSuchEntityException unless File.exist?(filename)
-    JSON.parse(File.read(filename))
+    get_release_aliases(name_list_id, project_name)
   end
 
   def create(name_list_id, project_name, release_name)
@@ -50,17 +53,17 @@ class ReleaseAliasesModel
   end
 
   def get_release_aliases(name_list_id, project_name)
-    filename = get_filename(name_list_id, project_name)
-    unless File.exist?(filename)
-      FileUtils.mkdir_p(get_foldername(name_list_id))
-      write_file(filename, '{}')
-    end
-    JSON.parse(File.read(filename))
+    redis_entry = @redis.get(redis_key(name_list_id, project_name))
+    redis_entry = '{}' if redis_entry.nil?
+    JSON.parse(redis_entry)
   end
 
   def put_release_aliases(name_list_id, project_name, data)
-    filename = get_filename(name_list_id, project_name)
-    write_file(filename, JSON.generate(data))
+    @redis.set(redis_key(name_list_id, project_name), JSON.generate(data))
+  end
+
+  def redis_key(name_list_id, project_name)
+    KEY_PREFIX + name_list_id + project_name
   end
 
   def generate_release_alias(name_list_id, already_used_aliases)

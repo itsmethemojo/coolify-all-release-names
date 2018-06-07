@@ -1,18 +1,15 @@
 # frozen_string_literal: true
 
 require 'test_helper'
+require 'mock_redis'
 
 class ReleaseAliasesModelTest < ActiveSupport::TestCase
   def test_release_aliases_empty
     release_aliases = init_release_aliases
-    assert_raise(
-      NoSuchEntityException,
-      'ReleaseNameModel index throws exception if no release alias '\
-      'for that project was ever created'
-    ) do
-      puts release_aliases.index('1', 'unit-tests')
-      release_aliases.index('1', 'unit-tests')
-    end
+    assert(
+      release_aliases.index('1', 'unit-tests').empty?,
+      'new release is empty'
+    )
   end
 
   def test_release_aliases_create_item_twice
@@ -74,7 +71,7 @@ class ReleaseAliasesModelTest < ActiveSupport::TestCase
 
   def init_release_aliases
     name_lists = NamePoolsModel.new(static_root)
-    ReleaseAliasesModel.new(dynamic_root, name_lists)
+    ReleaseAliasesModel.new(name_lists, MockRedis.new)
   end
 
   def init_release_aliases_with_three_items

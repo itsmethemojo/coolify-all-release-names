@@ -1,18 +1,35 @@
 CONTAINER_NAME=release-namer
 IMAGE_NAME=release-namer
 
-.PHONY: all
-all: run
+.PHONY: help
+all:
+	echo "\n\navailable targets:\n"; \
+	echo $$(cat $$(pwd)/Makefile | grep '.PHONY: ' | grep -v '(' | awk '{print $$2}') | tr " " "\n"
 
 .PHONY: clean
 clean:
 	docker stop $(CONTAINER_NAME) || true; \
 	docker rm $(CONTAINER_NAME) || true
 
+.PHONY: start-local-redis
+start-local-redis:
+	@if [ "$$(docker ps | grep local-redis-$(CONTAINER_NAME) | wc -l)" = "0" ]; then\
+		docker run --name local-redis-$(CONTAINER_NAME) -d redis;\
+	fi
+
+.PHONY: stop-local-redis
+stop-local-redis:
+	docker stop local-redis-$(CONTAINER_NAME) || true; \
+	docker rm local-redis-$(CONTAINER_NAME) || true
+
 .PHONY: run
-run: docker-build
+run: start-local-redis docker-build
 run:
-	docker run -it -v$$(pwd):/app --name $(CONTAINER_NAME) -p3000:3000 $(IMAGE_NAME) bash -c 'bin/rails server -P /tmp/rails-pid'
+	docker run -d -v$$(pwd):/app --name $(CONTAINER_NAME) -p3000:3000 --link local-redis-$(CONTAINER_NAME):redis -e REDIS_URL='redis://redis:6379' $(IMAGE_NAME) bash -c 'bin/rails server --binding 0.0.0.0 -P /tmp/rails-pid -d; sleep infinity'
+
+.PHONY: logs
+logs:
+	docker logs -f $(CONTAINER_NAME)
 
 .PHONY: test
 test: docker-build
