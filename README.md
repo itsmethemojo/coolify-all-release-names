@@ -1,7 +1,7 @@
-# Name my Release
+# Coolify All Release Names
 
-[![Build Status](https://travis-ci.org/itsmethemojo/name-my-release.svg?branch=master)](https://travis-ci.org/itsmethemojo/name-my-release)
-[![Heroku](https://heroku-badge.herokuapp.com/?app=name-my-release&style=flat&root=api/namepools)](https://name-my-release.herokuapp.com/api/namepools)
+[![Build Status](https://travis-ci.org/itsmethemojo/coolify-all-release-names.svg?branch=master)](https://travis-ci.org/itsmethemojo/coolify-all-release-names)
+[![Heroku](https://heroku-badge.herokuapp.com/?app=coolify-all-release-names&style=flat&root=api/namepools)](https://coolify-all-release-names.herokuapp.com/api/namepools)
 
 ## what is this
 
@@ -20,22 +20,28 @@ there should be cool names in it.
 
 And there it is. A reason to write an api.
 
-## software prerequisites
+## try it
+
+visit [https://coolify-all-release-names.herokuapp.com/](https://coolify-all-release-names.herokuapp.com/)
+
+## contribute
+Fork the repository and create a pull request. Even if you just want to add a new list.
+
+## run it locally
+
+### software prerequisites
 
 * [docker](https://docs.docker.com/install/#supported-platforms)
 * [make](https://formulae.brew.sh/formula/make)
 
-## howto get it running locally
+### just hit run
 After cloning the repository all you need is **only one command**.
 ```
 make run
 ```
 When the server is running you can [open the application in the browser](http://localhost:3000/api/namepools)
 
-## howto contribute
-fork the master and create an pull request
-
-you can run the tests locally with
+## start tests
 ```
 make test
 ```
