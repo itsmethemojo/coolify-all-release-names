@@ -1,9 +1,13 @@
 # frozen_string_literal: true
 
-require 'test_helper'
 require 'mock_redis'
+require 'test/unit'
+require_relative '../../src/models/name_pools_model.rb'
+require_relative '../../src/models/release_aliases_model.rb'
 
-class ReleaseAliasesModelTest < ActiveSupport::TestCase
+class ReleaseAliasesModelTest < Test::Unit::TestCase
+  STATIC_ROOT = '/tmp/tests/static'
+
   def test_release_aliases_empty
     release_aliases = init_release_aliases
     assert(
@@ -80,5 +84,38 @@ class ReleaseAliasesModelTest < ActiveSupport::TestCase
     release_aliases.create('1', 'unit-tests', '2.0.0')
     release_aliases.create('1', 'unit-tests', '3.0.0')
     release_aliases
+  end
+
+  def prepare_static_test_files
+    write_file(
+      static_root,
+      'namelists.json',
+      '[{"id":"1","name":"one"},{"id":"2","name":"two"}]'
+    )
+    write_file(static_root + '/namelists', '1.json', '["one","two","three"]')
+    write_file(static_root + '/namelists', '2.json', '["four","five","six"]')
+  end
+
+  def write_file(folderpath, filename, content)
+    FileUtils.mkdir_p(folderpath) unless File.directory?(folderpath)
+    file = File.new(folderpath + '/' + filename, 'w')
+    file.write(content)
+    file.close
+  end
+
+  def remove_dir(path)
+    FileUtils.rm_rf(path)
+  end
+
+  def static_root
+    STATIC_ROOT
+  end
+
+  def setup
+    prepare_static_test_files
+  end
+
+  def teardown
+    remove_dir(static_root)
   end
 end

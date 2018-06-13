@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 
-require 'test_helper'
+require 'json'
+require 'test/unit'
 
-class SourceFilesTest < ActiveSupport::TestCase
+class SourceFilesTest < Test::Unit::TestCase
   def test_main_source_file_length1
     assert(json_files.is_a?(Array), 'object is array')
     assert(main_file_object.is_a?(Array), 'object is array')
@@ -39,14 +40,14 @@ class SourceFilesTest < ActiveSupport::TestCase
   private
 
   def json_files
-    Dir.glob(Rails.root.join('storage', 'namelists', '*.json'))
+    Dir.glob(__dir__ + '/../../storage/namelists/*.json')
   end
 
   def prefix
-    Rails.root.join('storage', 'namelists').to_s + '/'
+    __dir__ + '/../../storage/namelists/'
   end
 
   def main_file_object
-    JSON.parse(File.read(Rails.root.join('storage', 'namelists.json')))
+    JSON.parse(File.read(__dir__ + '/../../storage/namelists.json'))
   end
 end
