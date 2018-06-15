@@ -8,12 +8,7 @@ settings_public = proc { File.join(root, 'public') }
 set :public_folder, settings_public
 settings_model_path = proc { File.join(root, 'src', 'models') + '/' }
 set :model_path, settings_model_path
-#set :port, 3000
-#set :bind, '0.0.0.0'
-# TODO: test/prod?
 set :show_exceptions, !settings.production?
-
-# set :raise_errors, true
 
 get '/api/namepools' do
   require_relative settings.model_path + 'name_pools_model.rb'
