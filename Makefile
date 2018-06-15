@@ -25,7 +25,7 @@ stop-local-redis:
 .PHONY: run
 run: start-local-redis docker-build
 run:
-	docker run -d -v$$(pwd):/app --name $(CONTAINER_NAME) -p3000:3000 --link local-redis-$(CONTAINER_NAME):redis -e REDIS_URL='redis://redis:6379' $(IMAGE_NAME) bash -c 'ruby app/server.rb -p 80 -o 0.0.0.0 -e development'
+	docker run -d -v$$(pwd):/app --name $(CONTAINER_NAME) -p3000:3000 --link local-redis-$(CONTAINER_NAME):redis -e REDIS_URL='redis://redis:6379' $(IMAGE_NAME) bash -c 'ruby app/server.rb -p 3000 -o 0.0.0.0 -e development'
 
 .PHONY: logs
 logs:
