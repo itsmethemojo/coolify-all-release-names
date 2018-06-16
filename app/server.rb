@@ -9,12 +9,6 @@ set :public_folder, settings_public
 settings_model_path = proc { File.join(root, 'src', 'models') + '/' }
 set :model_path, settings_model_path
 set :show_exceptions, !settings.production?
-set :swagger_host, 'localhost:3000'
-set :swagger_scheme, 'http'
-unless settings.production?
-  set :swagger_host, 'localhost:3000'
-  set :swagger_scheme, 'http'
-end
 
 get '/api/namepools' do
   require_relative settings.model_path + 'name_pools_model.rb'
