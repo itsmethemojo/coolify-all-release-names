@@ -1,8 +1,10 @@
 # frozen_string_literal: true
 
-require 'test_helper'
+require 'json'
+require 'test/unit'
 
-class SourceFilesTest < ActiveSupport::TestCase
+# test suite to test the data structures in the storage folder
+class SourceFilesTest < Test::Unit::TestCase
   def test_main_source_file_length1
     assert(json_files.is_a?(Array), 'object is array')
     assert(main_file_object.is_a?(Array), 'object is array')
@@ -30,6 +32,7 @@ class SourceFilesTest < ActiveSupport::TestCase
     json_files.each do |json_file|
       list = JSON.parse(File.read(json_file))
       assert(list.is_a?(Array), 'structure is a list')
+      assert(list.uniq.length == list.length, 'no duplicates in list')
       list.each do |item|
         assert(item.is_a?(String), 'items in list is string')
       end
@@ -39,14 +42,14 @@ class SourceFilesTest < ActiveSupport::TestCase
   private
 
   def json_files
-    Dir.glob(Rails.root.join('storage', 'namelists', '*.json'))
+    Dir.glob(__dir__ + '/../../storage/namepools/*.json')
   end
 
   def prefix
-    Rails.root.join('storage', 'namelists').to_s + '/'
+    __dir__ + '/../../storage/namepools/'
   end
 
   def main_file_object
-    JSON.parse(File.read(Rails.root.join('storage', 'namelists.json')))
+    JSON.parse(File.read(__dir__ + '/../../storage/namepools.json'))
   end
 end

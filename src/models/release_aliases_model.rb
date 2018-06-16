@@ -3,13 +3,14 @@
 require 'json'
 require 'fileutils'
 require 'redis'
+require_relative __dir__ + '/../exceptions/no_release_names_left_exception.rb'
+require_relative 'name_pools_model.rb'
 
 # model to access already created release aliases and to create new ones
 class ReleaseAliasesModel
-  include ActiveModel::Model
-
   @name_lists = nil
   @redis = nil
+  # TODO: read this from app config?
   KEY_PREFIX = 'bla'
 
   def initialize(
