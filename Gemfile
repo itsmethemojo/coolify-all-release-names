@@ -9,4 +9,5 @@ gem 'sinatra'
 gem 'redis', '~> 4.0'
 gem 'rubocop', '~> 0.56.0', require: false
 gem 'mock_redis'
-gem "test-unit"
+gem 'test-unit'
+gem 'erubis'

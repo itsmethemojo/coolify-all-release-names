@@ -3,6 +3,7 @@
 require 'test/unit'
 require_relative '../../src/models/name_pools_model.rb'
 
+# test suite to test NamePoolsModel
 class NamePoolsModelTest < Test::Unit::TestCase
   STATIC_ROOT = '/tmp/tests/static'
   DYNAMIC_ROOT = '/tmp/tests/dynamic'
@@ -35,11 +36,11 @@ class NamePoolsModelTest < Test::Unit::TestCase
   def prepare_static_test_files
     write_file(
       static_root,
-      'namelists.json',
+      'namepools.json',
       '[{"id":"1","name":"one"},{"id":"2","name":"two"}]'
     )
-    write_file(static_root + '/namelists', '1.json', '["one","two","three"]')
-    write_file(static_root + '/namelists', '2.json', '["four","five","six"]')
+    write_file(static_root + '/namepools', '1.json', '["one","two","three"]')
+    write_file(static_root + '/namepools', '2.json', '["four","five","six"]')
   end
 
   def write_file(folderpath, filename, content)

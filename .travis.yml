@@ -5,4 +5,4 @@ install:
   - "bundle install --jobs=3 --retry=3"
 script:
   - "tests/runner.sh tests/unit"
-  - "rubocop src test app/server.rb"
+  - "rubocop src tests app"

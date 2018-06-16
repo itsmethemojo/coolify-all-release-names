@@ -1,0 +1,253 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "",
+    "version": "1.0.0",
+    "title": "Coolify All Release Names API"
+  },
+  "host": "<%= settings.swagger_host %>",
+  "basePath": "/api",
+  "tags": [
+    {
+      "name": "name pools"
+    },
+    {
+      "name": "release aliases"
+    }
+  ],
+  "schemes": [
+    "<%= settings.swagger_scheme %>"
+  ],
+  "paths": {
+    "/namepools": {
+      "get": {
+        "tags": [
+          "name pools"
+        ],
+        "summary": "retrieve the list of available name pools",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/NamePoolList"
+            }
+          }
+        }
+      }
+    },
+    "/namepool/{namepool_id}": {
+      "get": {
+        "tags": [
+          "name pools"
+        ],
+        "summary": "retrieve a name pool",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "namepool_id",
+            "in": "path",
+            "description": "id of name pool to return",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "example": "Name-1"
+              }
+            }
+          },
+          "404": {
+            "description": "name pool not found",
+            "schema": {
+              "$ref": "#/definitions/NotFoundError"
+            }
+          }
+        }
+      }
+    },
+    "/namepool/{namepool_id}/project/{project_name}/releasealiases": {
+      "get": {
+        "tags": [
+          "release aliases"
+        ],
+        "summary": "retrieve all release aliases for a project / name pool combination",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "namepool_id",
+            "in": "path",
+            "description": "id of name pool",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "project_name",
+            "in": "path",
+            "description": "name of project",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/ReleaseAliases"
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "release aliases"
+        ],
+        "summary": "retrieve all release aliases for a project / name pool combination",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/x-www-form-urlencoded"
+        ],
+        "parameters": [
+          {
+            "name": "namepool_id",
+            "in": "path",
+            "description": "id of name pool",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "project_name",
+            "in": "path",
+            "description": "name of project",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "release_name",
+            "in": "formData",
+            "description": "name of project",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "release alias created",
+            "schema": {
+              "$ref": "#/definitions/CreatedReleaseAlias"
+            }
+          },
+          "404": {
+            "description": "name pool not found",
+            "schema": {
+              "$ref": "#/definitions/NotReleaseNamesLeftError"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "CreatedReleaseAlias": {
+      "type": "object",
+      "properties": {
+        "1.0.0": {
+          "type": "string",
+          "example": "Pidgeot"
+        }
+      }
+    },
+    "ReleaseAliases": {
+      "type": "object",
+      "properties": {
+        "1.0.0": {
+          "type": "string",
+          "example": "Pidgeot"
+        },
+        "1.1.0": {
+          "type": "string",
+          "example": "Mewto"
+        },
+        "2.0.0": {
+          "type": "string",
+          "example": "Rattata"
+        }
+      }
+    },
+    "NotReleaseNamesLeftError": {
+      "type": "object",
+      "required": [
+        "status",
+        "message"
+      ],
+      "properties": {
+        "status": {
+          "type": "integer",
+          "example": "400"
+        },
+        "message": {
+          "type": "string",
+          "example": "No Release Names Left"
+        }
+      }
+    },
+    "NotFoundError": {
+      "type": "object",
+      "required": [
+        "status",
+        "message"
+      ],
+      "properties": {
+        "status": {
+          "type": "integer",
+          "example": "404"
+        },
+        "message": {
+          "type": "string",
+          "example": "Not Found"
+        }
+      }
+    },
+    "NamePoolList": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/NamePool"
+      }
+    },
+    "NamePool": {
+      "type": "object",
+      "required": [
+        "id",
+        "name"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "example": "pool-id-1"
+        },
+        "name": {
+          "type": "string",
+          "example": "Pool Name 1"
+        }
+      }
+    }
+  }
+}

@@ -2,6 +2,7 @@ GEM
   remote: https://rubygems.org/
   specs:
     ast (2.4.0)
+    erubis (2.7.0)
     mock_redis (0.18.0)
     mustermann (1.0.2)
     parallel (1.12.1)
@@ -36,6 +37,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  erubis
   mock_redis
   redis (~> 4.0)
   rubocop (~> 0.56.0)

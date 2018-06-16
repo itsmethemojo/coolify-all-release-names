@@ -54,9 +54,9 @@ build:
 .PHONY: checkstyle
 checkstyle: docker-build
 checkstyle:
-	docker run -it -v$$(pwd):/app --name $(CONTAINER_NAME) $(IMAGE_NAME) bash -c 'rubocop src test app/server.rb'
+	docker run -it -v$$(pwd):/app --name $(CONTAINER_NAME) $(IMAGE_NAME) bash -c 'rubocop src tests app'
 
 .PHONY: fix-checkstyle
 fix-checkstyle: docker-build
 fix-checkstyle:
-	docker run -it -v$$(pwd):/app --name $(CONTAINER_NAME) $(IMAGE_NAME) bash -c 'rubocop -a src test app/server.rb'
+	docker run -it -v$$(pwd):/app --name $(CONTAINER_NAME) $(IMAGE_NAME) bash -c 'rubocop -a src tests app'

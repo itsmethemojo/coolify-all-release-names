@@ -12,11 +12,11 @@ class NamePoolsModel
   end
 
   def index
-    JSON.parse(File.read(@files_root + '/namelists.json'))
+    JSON.parse(File.read(@files_root + '/namepools.json'))
   end
 
   def item(id)
-    filename = @files_root + '/namelists/' + id + '.json'
+    filename = @files_root + '/namepools/' + id + '.json'
     raise NoSuchEntityException unless File.exist?(filename)
     JSON.parse(File.read(filename))
   end
