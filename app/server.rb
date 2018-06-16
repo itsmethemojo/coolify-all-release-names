@@ -9,6 +9,9 @@ set :public_folder, settings_public
 settings_model_path = proc { File.join(root, 'src', 'models') + '/' }
 set :model_path, settings_model_path
 set :show_exceptions, !settings.production?
+set :api_data,
+    'title' => 'Coolify All Release Names',
+    'version' => '1.0.0'
 
 get '/api/namepools' do
   require_relative settings.model_path + 'name_pools_model.rb'
@@ -49,12 +52,26 @@ rescue NoReleaseNamesLeftException
 end
 
 get '/swagger.json' do
+  request_data = {
+    'host' => request.env['HTTP_HOST'],
+    'scheme' => request.env['REQUEST_URI'].split(':').first
+  }
   erb :'templates/swagger.json',
       content_type: :'application/json',
-      locals: {
-        host: request.env['HTTP_HOST'],
-        scheme: request.env['REQUEST_URI'].split(':').first
-      }
+      locals: { api: request_data.merge(settings.api_data) }
+end
+
+get '/swagger-ui/index.html' do
+  request_data = {
+    'host' => request.env['HTTP_HOST'],
+    'scheme' => request.env['REQUEST_URI'].split(':').first
+  }
+  erb :'templates/swagger-ui/index.html',
+      locals: { api: request_data.merge(settings.api_data) }
+end
+
+get '/' do
+  redirect '/swagger-ui/index.html', 302
 end
 
 not_found do
