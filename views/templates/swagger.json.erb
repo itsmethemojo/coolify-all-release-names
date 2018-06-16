@@ -1,11 +1,11 @@
 {
   "swagger": "2.0",
   "info": {
-    "description": "",
-    "version": "1.0.0",
-    "title": "Coolify All Release Names API"
+    "description": "You might have already thought about giving your application releases catchy names besides using semantic versioning. \n\n**Let's start here right now.** This API makes this super easy and reproducable. \n\nYou have a super idea for an additional list of names to select from? Visit me on [Github](https://github.com/itsmethemojo/coolify-all-release-names) and submit your list. We will make this API better for everyone.",
+    "version": "<%= api['version'] %>",
+    "title": "<%= api['title'] %>"
   },
-  "host": "<%= host %>",
+  "host": "<%= api['host'] %>",
   "basePath": "/api",
   "tags": [
     {
@@ -16,7 +16,7 @@
     }
   ],
   "schemes": [
-    "<%= scheme %>"
+    "<%= api['scheme'] %>"
   ],
   "paths": {
     "/namepools": {
@@ -249,5 +249,9 @@
         }
       }
     }
+  },
+  "externalDocs": {
+    "description": "Github",
+    "url": "https://github.com/itsmethemojo/coolify-all-release-names"
   }
 }
